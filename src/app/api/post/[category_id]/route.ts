@@ -6,18 +6,18 @@ import { GetDBSettings, IDBSettings } from '../../../../types/db_settings';
 let connectionParams = GetDBSettings();
 
 // Define and export the GET handler function
-export async function GET(request: NextRequest) {
-    let category_id = '';
+export async function GET(request: NextRequest, {params}: {params: Promise<{category_id: string}>}) {
 
     try {
         // Get category to filter by from url parameter
-        category_id = request.nextUrl!.searchParams!.get('category_id')!
+        const category_id = (await params).category_id;
+        console.log("Category ID requested:", category_id);
 
         // Connect to database
         const connection = await mysql.createConnection(connectionParams);
 
         // Create query to fetch post title and summary data for card display
-        let get_post_query = "SELECT user.username, post.title, post.summary FROM user INNER JOIN post ON user.user_id=post.user_id INNER JOIN post_category_bridge ON post.post_id=post_category_bridge.post_id WHERE post_category_bridge.category_id=?;";
+        let get_post_query = "SELECT user.username, post.title, post.summary FROM user INNER JOIN post ON user.user_id=post.user_id INNER JOIN post_category_bridge ON post.post_id=post_category_bridge.post_id WHERE post_category_bridge.category_id=?";
 
         // Array to pass parameters to SQL query
         let values: any[] = [category_id];
