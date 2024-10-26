@@ -1,42 +1,17 @@
 import { NextResponse, NextRequest } from 'next/server';
-import mysql from 'mysql2/promise';
-import { GetDBSettings, IDBSettings } from '../../../../types/db_settings';
-
-// Populate mysql database parameters
-let connectionParams = GetDBSettings();
+import { handleRouteGET } from '../../util/handleRouteGET';
 
 // Define and export the GET handler function
-export async function GET(request: NextRequest) {
-    let category_id = '';
-    let user_id = '';
+export async function GET(request: NextRequest, {params}: {params: Promise<{ids: string[]}>}) {
+    // Get category and user to filter by from url parameter
+    const user_id = (await params).ids[0];
+    const category_id = (await params).ids[1];
+    
+    // Create query to fetch post title and summary data for card display
+    let get_post_query = "SELECT user.username, post.title, post.summary FROM user INNER JOIN post ON user.user_id=post.user_id INNER JOIN post_category_bridge ON post.post_id=post_category_bridge.post_id WHERE user.user_id=? AND post_category_bridge.category_id=?;";
 
-    try {
-        // Get category to filter by from url parameter
-        category_id = request.nextUrl!.searchParams!.get('category_id')!
-        user_id = request.nextUrl!.searchParams!.get('user_id')!
+    // Array to pass parameters to SQL query
+    let values: any[] = [user_id, category_id];
 
-        // Connect to database
-        const connection = await mysql.createConnection(connectionParams);
-
-        // Create query to fetch post title and summary data for card display
-        let get_post_query = "SELECT user.username, post.title, post.summary FROM user INNER JOIN post ON user.user_id=post.user_id INNER JOIN post_category_bridge ON post.post_id=post_category_bridge.post_id WHERE user.user_id=? AND post_category_bridge.category_id=?;";
-
-        // Array to pass parameters to SQL query
-        let values: any[] = [user_id, category_id];
-
-        // Execute the query and retrieve results
-        const [results] = await connection.execute(get_post_query, values);
-
-        // Return results as a JSON object
-        return NextResponse.json(results)
-    } catch (err) {
-        console.log('ERROR: API - ', (err as Error).message)
-
-        const response = {
-            error: (err as Error).message,
-            returnedStatus: 200,
-        }
-
-        return NextResponse.json(response, {status: 200})
-    }
+    return await handleRouteGET(request, values, get_post_query);
 }

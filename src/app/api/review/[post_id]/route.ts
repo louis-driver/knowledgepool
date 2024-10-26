@@ -1,38 +1,18 @@
 import { NextResponse, NextRequest } from 'next/server';
-import mysql from 'mysql2/promise';
-import { GetDBSettings, IDBSettings } from '../../../../types/db_settings';
-
-// Populate mysql database parameters
-let connectionParams = GetDBSettings();
+import { handleRouteGET } from '../../util/handleRouteGET';
 
 // Define and export the GET handler function
 export async function GET(request: NextRequest, {params}: {params: Promise<{post_id: string}>}) {
 
-    try {
-        const post_id = (await params).post_id;
-        console.log("Post ID requested:", post_id);
-        
-        // Connect to database
-        const connection = await mysql.createConnection(connectionParams);
+    // Get post_id to filter by from url parameter
+    const post_id = (await params).post_id;
+    
+    // Create query to fetch review data
+    let get_review_query = "SELECT review.review_id, review.approval_rating, review.comments from review WHERE review.post_id=?";
 
-        // Create query to fetch post title and summary data for card display
-        let get_review_query = "SELECT review.review_id, review.approval_rating, review.comments from review WHERE review.post_id=?";
+    // Pass query parameters into an array
+    let values: any[] = [post_id];
 
-        let values: any[] = [post_id];
-
-        // Execute the query and retrieve results
-        const [results] = await connection.execute(get_review_query, values);
-
-        // Return results as a JSON object
-        return NextResponse.json(results)
-    } catch (err) {
-        console.log('ERROR: API - ', (err as Error).message)
-
-        const response = {
-            error: (err as Error).message,
-            returnedStatus: 200,
-        }
-
-        return NextResponse.json(response, {status: 200})
-    }
+    // Return NextResponse of query values in json format
+    return await handleRouteGET(request, values, get_review_query);
 }
