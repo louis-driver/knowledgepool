@@ -1,36 +1,34 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## KnowledgePool as a Platform
+KnowledgePoolintends to be a social platform that requires 
+users to create long-form written content that is reviewed by 
+community members before being published. 
 
-## Getting Started
+Content on the platform should share what users have learned, 
+their experience learning, and how other users can take actions 
+to expand upon or try similar experiences and share their results.
 
-First, run the development server:
+## Project Structure
+If you're like me, I had little clue on the file structure for 
+a Next.js application (as such, the folder structure could 
+still be out of whack). However, I can share what I understand 
+thus far.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+All application logic is stored in the src/app/ directory.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Within the app/api/ folder are routes that are essentially the backend 
+for the application. In these routes I connect to and execute
+SQL statements in a MySQL database.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Examples:
+A request to http://domain/api/post will return a list of all 
+posts.
+A request to http://domain/api/post/[post_id] is a dynamic 
+route and will return the post with the given post_id, i.e. 
+http://domain/api/post/3 will return the data for post with post_id=3.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+I have placed pages that users can navigate to for content 
+in the app/pages/ folder, whose structure roughly mirrors the 
+api folder. I've done this to help align my page fetches with 
+the api routes. At this moment, the primary focus has been on 
+creating routes in the api, so not much is going on in pages/.
