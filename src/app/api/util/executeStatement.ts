@@ -6,7 +6,7 @@ import { GetDBSettings, IDBSettings } from '../../../types/db_settings';
 let connectionParams = GetDBSettings();
 
 // Define and export the executeStatement function
-export async function executeStatement(params: any[], sqlStatement: string) {
+export async function executeStatement(params: any, sqlStatement: string) {
 
     try {
         // Connect to database
