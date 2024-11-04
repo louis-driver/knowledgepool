@@ -3,6 +3,7 @@
 import { notFound } from "next/navigation"
 
 interface Post {
+    post_id: string
     username: string
     title: string
     summary: string
@@ -10,7 +11,7 @@ interface Post {
 
 async function getPosts(user_id: string) {
     console.log("Fetching posts by user", {user_id});
-    let res = await fetch(`http://localhost:3000/api/post/${user_id}`);
+    let res = await fetch(`http://localhost:3000/api/post/user/${user_id}`);
     let posts: Post[] = await res.json();
     if (!posts) notFound();
     return posts;
@@ -26,15 +27,12 @@ export async function generateMetadata(user_id: string) {
 
 export default async function Post({params}: {params: Promise<{user_id: string}>}) {
     const {user_id} = await params;
-    console.log("Component received Category ID:", {user_id});
     const posts = await getPosts(user_id);
-
-    console.log(posts);
 
     return (
         <main>
             {posts.map((post: Post) =>
-                <article key={post.username}>
+                <article key={post.post_id}>
                     <h1>{post.title}</h1>
                     <h2>{post.username}</h2>
                     <p>{post.summary}</p>
