@@ -42,7 +42,6 @@ export async function POST(request: NextRequest) {
     // Get user_id from database for newly created user for use in session cookie
     const findUserIdResponse = await executeStatement({username: validatedValues.username}, "SELECT user_id FROM `knowledgepool`.`user` WHERE username = ?");
     const userId = await findUserIdResponse.json();
-    console.log("UserID:", userId);
     await createSession(userId);
 
     const response = {

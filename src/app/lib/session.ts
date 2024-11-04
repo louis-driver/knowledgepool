@@ -40,11 +40,9 @@ export async function createSession(userId: string) {
             sameSite: 'lax',
         }
     );
-    console.log("Cookie set:", cookie.get('session')?.value)
 }
 
 export async function getSession() {
-    console.log("getSession called")
     const cookie = await cookies();
     const session = cookie.get('session')?.value;
     if (!session) return null;

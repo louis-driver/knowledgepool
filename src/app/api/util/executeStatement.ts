@@ -11,17 +11,14 @@ export async function executeStatement(params: any, sqlStatement: string) {
     try {
         // Connect to database
         const connection = await mysql.createConnection(connectionParams);
-        console.log("Connected to database;")
 
         console.log("SQL Statement:", sqlStatement);
-        console.log("Values:", params);
 
         const values = Object.values(params);
         console.log("Values as array:", values);
 
         // Execute the query and retrieve results
         const [results] = await connection.execute(sqlStatement, values);
-        console.log("Statement executed. Response:", results)
 
         // Return results as a JSON object
         return NextResponse.json(results)

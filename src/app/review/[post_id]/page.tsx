@@ -25,11 +25,7 @@ export async function generateMetadata(post_id: string) {
 
 export default async function Reviews({params}: {params: Promise<{post_id: string}>}) {
     const {post_id} = await params;
-    console.log("Component received Post ID:", {post_id});
     const reviews = await getReviews(post_id);
-
-    console.log("/review/" + {post_id}, "page function called.");
-    console.log(reviews);
 
     return (
         <main>

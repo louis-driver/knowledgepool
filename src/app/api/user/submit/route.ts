@@ -6,7 +6,6 @@ import { SignupFormSchema } from '@/app/lib/signup';
 import { redirect } from 'next/navigation';
 
 export async function POST(request: NextRequest) {
-    console.log("Begin POST request submit user");
     const body = await request.json();
     console.log("POST body:", body);
 
@@ -54,7 +53,6 @@ export async function POST(request: NextRequest) {
     // Execute insert statement with validated values to create user account
     const sqlResponse = await executeStatement(validatedValues.data, insertStatement);
     const responseValues = await sqlResponse.json();
-    console.log("Response Values: ", responseValues);
 
     // Get user_id from database for newly created user for use in session cookie
     const findUserIdResponse = await executeStatement({username: validatedValues.data.username}, "SELECT user_id FROM `knowledgepool`.`user` WHERE username = ?");
