@@ -1,9 +1,10 @@
-import { FormResponse } from "@/types/forms"; 
+
+'use client'
+
 import { SigninFormSchema } from "@/app/lib/signin";
+import { redirect } from "next/navigation";
 
 async function authorizeUser(formData: FormData) {
-    'use server'
-
     console.log("authorizeUser called.");
 
     // Validate form fields
@@ -31,19 +32,20 @@ async function authorizeUser(formData: FormData) {
             'Content-Type': 'application/json'
         }
     });
-    let submissionMessage: FormResponse[] = await res.json();
+    let submissionMessage = await res.json();
     console.log("Submission Message:", submissionMessage);
 
     if (!submissionMessage) {
-        console.log('An error occurred while creating your account.');
+        console.log('An error occurred while signing you.');
     }
 
-    // mutate data
-    // revalidate cache
+    if (submissionMessage.authenticated)
+        redirect('/post');
+    else
+        redirect('/user/signin');
 }
 
 export default function Page() {
-    'use client'
 
     return (
         <>

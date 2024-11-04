@@ -3,7 +3,7 @@
 import { SignJWT, jwtVerify } from 'jose';
 import { cookies } from 'next/headers';
 
-const secretKey = process.env.SECRET_KEY;
+const secretKey = process.env.SESSION_SECRET;
 const encodedKey = new TextEncoder().encode(secretKey);
 
 // TODO determine the format types of a payload
@@ -22,7 +22,7 @@ export async function decrypt(session: string | undefined = '') {
         });
         return payload;
     } catch (error) {
-        console.log('Failed to verify sesion')
+        console.log('Failed to verify session')
     }
 }
 
@@ -38,12 +38,13 @@ export async function createSession(userId: string) {
             secure: true,
             expires: expiresAt,
             sameSite: 'lax',
-            path: '/pages/post',
         }
     );
+    console.log("Cookie set:", cookie.get('session')?.value)
 }
 
 export async function getSession() {
+    console.log("getSession called")
     const cookie = await cookies();
     const session = cookie.get('session')?.value;
     if (!session) return null;

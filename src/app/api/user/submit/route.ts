@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import bcrypt from 'bcrypt';
 import { executeStatement } from '../../util/executeStatement';
-import { FormResponse } from '@/types/forms';
+import { createSession } from '@/app/lib/session';
+import { SignupFormSchema } from '@/app/lib/signup';
+import { redirect } from 'next/navigation';
 
 export async function POST(request: NextRequest) {
     console.log("Begin POST request submit user");
@@ -32,18 +34,33 @@ export async function POST(request: NextRequest) {
 
     // If all else has been validated, hash the password for storage in database
     const hashedPassword = await bcrypt.hash(body.password, 10)
-    const validatedValues = {
+    const validatedValues = SignupFormSchema.safeParse({
         username: body.username,
         email: body.email,
         password: hashedPassword,
         firstname: body.firstname,
         lastname: body.lastname
-    };
+    });
+
+    //If any form fields are invalid return early
+    if (!validatedValues.success) {
+        console.log("Fields not validated");
+        console.log(validatedValues);
+        return {
+            errors: validatedValues.error.flatten().fieldErrors
+        }
+    }
 
     // Execute insert statement with validated values to create user account
-    const sqlResponse = await executeStatement(validatedValues, insertStatement);
+    const sqlResponse = await executeStatement(validatedValues.data, insertStatement);
     const responseValues = await sqlResponse.json();
     console.log("Response Values: ", responseValues);
+
+    // Get user_id from database for newly created user for use in session cookie
+    const findUserIdResponse = await executeStatement({username: validatedValues.data.username}, "SELECT user_id FROM `knowledgepool`.`user` WHERE username = ?");
+    const userId = await findUserIdResponse.json();
+    console.log("UserID:", userId);
+    await createSession(userId);
 
     const response = {
         message: "Thanks for signing up! We will verify your account creation shortly.",

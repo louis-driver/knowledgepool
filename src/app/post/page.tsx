@@ -42,8 +42,6 @@ export async function generateMetadata() {
 export default async function Page() {
     let posts = await getPosts();
 
-    console.log(posts);
-
     return (
         <main>
             {posts.map((post: Post) =>

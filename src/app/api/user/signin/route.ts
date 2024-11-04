@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import bcrypt, { compare } from 'bcrypt';
 import { executeStatement } from '../../util/executeStatement';
 import { FormResponse } from '@/types/forms';
+import { createSession } from '@/app/lib/session';
 
 export async function POST(request: NextRequest) {
     console.log("Begin POST request submit user");
@@ -24,7 +25,6 @@ export async function POST(request: NextRequest) {
     console.log("signin received response:", responseValues);
 
 
-    console.log("Comparing passwords:", body.password, responseValues[0].password);
     // Compare provided password and stored password
     const authenticated = await compare(body.password, responseValues[0].password);
     console.log("Passwords Match:", authenticated);
@@ -38,6 +38,12 @@ export async function POST(request: NextRequest) {
     else {
         authenticationMessage = "You're all signed in!";
     }
+
+    // Get user_id from database for newly created user for use in session cookie
+    const findUserIdResponse = await executeStatement({username: validatedValues.username}, "SELECT user_id FROM `knowledgepool`.`user` WHERE username = ?");
+    const userId = await findUserIdResponse.json();
+    console.log("UserID:", userId);
+    await createSession(userId);
 
     const response = {
         message: authenticationMessage,
