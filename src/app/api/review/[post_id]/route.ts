@@ -1,18 +1,32 @@
 import { NextResponse, NextRequest } from 'next/server';
-import { handleRouteGET } from '../../util/handleRouteGET';
+import { executeStatement } from '../../util/executeStatement';
 
 // Define and export the GET handler function
 export async function GET(request: NextRequest, {params}: {params: Promise<{post_id: string}>}) {
 
-    // Get post_id to filter by from url parameter
-    const post_id = (await params).post_id;
-    
-    // Create query to fetch review data
-    let get_review_query = "SELECT review.review_id, review.approval_rating, review.comments from review WHERE review.post_id=?";
+    try {
+        // Get post_id filter by from url parameter
+        const post_id = (await params).post_id;
 
-    // Pass query parameters into an array
-    let values: any[] = [post_id];
+        // Create query to fetch the oldest posts that have not received three reviews thus far.
+        // TODO only return posts that aren't written by the user 
+        let get_post_query = "SELECT * FROM post WHERE post_id=?";
 
-    // Return NextResponse of query values in json format
-    return await handleRouteGET(request, values, get_review_query);
+        // Execute the query and retrieve results
+        const sqlResponse = await executeStatement({post_id}, get_post_query);
+        const responseValues = await sqlResponse.json();
+        console.log(responseValues);
+
+        // Return results as a JSON object
+        return NextResponse.json(responseValues)
+    } catch (err) {
+        console.log('ERROR: API - ', (err as Error).message)
+
+        const response = {
+            error: (err as Error).message,
+            returnedStatus: 200,
+        }
+
+        return NextResponse.json(response, {status: 200})
+    }
 }
