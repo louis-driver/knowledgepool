@@ -1,9 +1,11 @@
-'use client'
+import submitPost from "@/app/actions/post";
+import { getSession } from "@/app/lib/session";
+import { PostFormSubmission } from "@/types/post";
 
 async function handleSubmit(formData: FormData) {
-    console.log("")
-
-    const validatedFields = {
+    "use server"
+    
+    const validatedFields: PostFormSubmission = {
         title: formData.get('title'),
         summary: formData.get('summary'),
         content: formData.get('content'),
@@ -12,6 +14,7 @@ async function handleSubmit(formData: FormData) {
 
     console.log("Knowledge Drop Submitted:", validatedFields);
 
+    /*
     let res = await fetch(`http://localhost:3000/api/post/submit`, {
         method: 'POST',
         body: JSON.stringify(validatedFields),
@@ -20,11 +23,14 @@ async function handleSubmit(formData: FormData) {
         }
     })
 
-    let submissionMessage = await res.json();
+    let submissionMessage = await res.json();*/
+
+    let submissionMessage = await submitPost(validatedFields);
     console.log("Knowledge Drop Submission Message:", submissionMessage)
 }
 
 export default function Page() {
+    'use client'
     return (
         <>
             <h1>Let's fill the KnowledgePool!</h1>

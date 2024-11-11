@@ -1,6 +1,9 @@
 /* Documentation: https://nextjs.org/docs/app/building-your-application/data-fetching/fetching */
 
+import Link from "next/link"
 import { notFound } from "next/navigation"
+import { getPosts } from "../actions/post"
+import ParsedContent from "@/components/ParsedContent"
 
 interface Post {
     post_id: number
@@ -14,12 +17,6 @@ interface Post {
  fetching from an api folder, so that may be worth researching 
  and refactoring later
  */
-async function getPosts() {
-    let res = await fetch(`http://localhost:3000/api/post/`);
-    let posts: Post[] = await res.json();
-    if (!posts) notFound();
-    return posts;
-}
 
 export async function generateStaticParams() {
     let posts = await fetch('http://localhost:3000/api/post/').then((res) =>
@@ -40,7 +37,7 @@ export async function generateMetadata() {
 }
 
 export default async function Page() {
-    let posts = await getPosts();
+    let posts: Post[] = await getPosts();
 
     return (
         <main>
@@ -49,6 +46,7 @@ export default async function Page() {
                     <h1>{post.title}</h1>
                     <h2>{post.username}</h2>
                     <p>{post.summary}</p>
+                    <Link href={`/post/${post.post_id}`}>Check out this Drop</Link>
                 </article>
             )}
         </main>
