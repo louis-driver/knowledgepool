@@ -1,39 +1,20 @@
-import { notFound } from "next/navigation";
-
-interface Review {
-    id: number,
-    approval_rating: string,
-    comments: string,
-}
-
-async function getReviews() {
-    // Fetch reviews for post with the given post_id
-    console.log("Fetching reviews for post");
-    let res = await fetch(`http://localhost:3000/api/review/all`);
-    let reviews: Review[] = await res.json();
-    if (!reviews) notFound();
-    return reviews;
-}
-
-export async function generateMetadata() {
-    let reviews = await getReviews();
-
-    return reviews.map((review: Review) => ({
-        reviews: review.approval_rating,
-    }));
-}
+import Link from "next/link";
+import { getPostsForReview } from "../actions/review";
+import { Post } from "@/types/review";
 
 export default async function Reviews() {
-    let reviews = await getReviews();
-    console.log("Component received all reviews");
-    console.log(reviews);
+    let posts = await getPostsForReview();
+    console.log("Component received posts to review");
+    console.log(posts);
 
     return (
         <main>
-            {reviews.map((review: Review) => 
-                <section key={review.id}>
-                    <h2>Approval: <span>{review.approval_rating}</span></h2>
-                    <p>{review.comments}</p>
+            <p>Here are some posts you can review.</p>
+            {posts.map((post: Post) => 
+                <section key={post.post_id}>
+                    <h2>{post.title}</h2>
+                    <p>{post.summary}</p>
+                    <Link href={`/review/${post.post_id}`}>Let's Filter This Drop</Link>
                 </section>
             )}
         </main>

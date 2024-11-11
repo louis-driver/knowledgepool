@@ -1,54 +1,61 @@
-import { notFound } from "next/navigation";
 
-interface Review {
-    id: number,
-    approval_rating: string,
-    comments: string,
+import { getPostForReview, submitReview } from "@/app/actions/review";
+import { getSession } from "@/app/lib/session";
+import ParsedContent from "@/components/ParsedContent";
+import { Post, Review } from "@/types/review";
+
+async function handleSubmit(formData: FormData) {
+    "use server"
+    const session = await getSession();
+    console.log("handlesubmit session", session?.user_id);
+    // TODO validate fields
+    const validatedFields: Review = {
+        user_id: parseInt(session?.user_id),
+        post_id: parseInt(formData.get('post_id')),
+        rating: formData.get('rating'),
+        comments: formData.get('comments')
+    }
+
+    console.log("Review Submitted:", validatedFields);
+
+    let submissionMessage = await submitReview(validatedFields);
+    console.log("Review Submission Message:", submissionMessage)
 }
 
-async function getReviews(post_id: string) {
-    // Fetch reviews for post with the given post_id
-    console.log("Fetching reviews for post", {post_id});
-    let res = await fetch(`http://localhost:3000/api/review/${post_id}`);
-    let reviews: Review[] = await res.json();
-    if (!reviews) notFound();
-    return reviews;
-}
-
-export async function generateMetadata(post_id: string) {
-    let reviews = await getReviews(post_id);
-
-    return reviews.map((review: Review) => ({
-        reviews: review.approval_rating,
-    }));
-}
-
-export default async function Reviews({params}: {params: Promise<{post_id: string}>}) {
+export default async function Page({params}: {params: Promise<{post_id: number}>}) {
     const {post_id} = await params;
-    const reviews = await getReviews(post_id);
+    const post: Post = await getPostForReview(post_id);
+    console.log("Component received post to review");
+    console.log(post);
+    // TODO create function to parse variable content data
+    const content = post.content;
 
     return (
         <main>
-            {reviews.map((review: Review) => 
-                <section key={review.id}>
-                    <h2>Approval: <span>{review.approval_rating}</span></h2>
-                    <p>{review.comments}</p>
-                </section>
-            )}
+            <p>Review this post.</p>
+            <section>
+                    <h2>{post.title}</h2>
+                    <h3>Version <span>{post.version}</span></h3>
+                    <p>{post.summary}</p>
+                    <ParsedContent content={content} />
+            </section>
+            <form action={handleSubmit}>
+                <input type="hidden" name="post_id" value={post.post_id} />
+                <div className="input-field">
+                    <input type="radio" id="rating" name="rating" value="Approved" required />
+                    <label htmlFor="rating">Approved</label>
+                    <input type="radio" id="rating" name="rating" value="Needs Work" required />
+                    <label htmlFor="rating">Needs Work</label>
+                    <input type="radio" id="rating" name="rating" value="Rejected" required />
+                    <label htmlFor="rating">Rejected</label>
+                </div>
+                <div className="input-field">
+                    <label htmlFor="comments">Comments</label>
+                    <textarea id="comments" name="comments" required />
+                </div>
+
+                <button type="submit">Complete Filtration</button>
+            </form>
         </main>
     )
 }
-
-// https://nextjs.org/docs/app/api-reference/file-conventions/page 
-
-/*
-export async function getServerSideProps(context) {
-    const { id } = context.params; // Get the dynamic route parameter
-    const res = await fetch(`https://localhost:3000/review/${id}`);
-    const reviews = await res.json();
-  
-    return {
-      props: { reviews }, // Pass review data to the component
-    };
-  }
-    */
