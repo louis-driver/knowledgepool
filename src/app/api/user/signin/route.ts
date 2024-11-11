@@ -39,10 +39,12 @@ export async function POST(request: NextRequest) {
         authenticationMessage = "You're all signed in!";
     }
 
-    // Get user_id from database for newly created user for use in session cookie
+    // Get user_id from database for use in session cookie
     const findUserIdResponse = await executeStatement({username: validatedValues.username}, "SELECT user_id FROM `knowledgepool`.`user` WHERE username = ?");
-    const userId = await findUserIdResponse.json();
-    await createSession(userId);
+    const userIdReponse = await findUserIdResponse.json();
+    const user_id = userIdReponse[0].user_id;
+    console.log("\\user\\signin user_id", user_id);
+    await createSession(user_id);
 
     const response = {
         message: authenticationMessage,
