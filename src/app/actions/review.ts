@@ -1,10 +1,10 @@
 import { executeStatement } from "../api/util/executeStatement";
 import { Review } from "@/types/review";
+import { getSession } from "../lib/session";
 
 export async function getPostForReview(post_id: number) {
     try {
-        // Create query to fetch the oldest posts that have not received three reviews thus far.
-        // TODO only return posts that aren't written by the user 
+        // Create query to fetch the selected post to review
         let get_post_query = "SELECT * FROM post WHERE post_id=?";
 
         // Execute the query and retrieve results
@@ -12,7 +12,7 @@ export async function getPostForReview(post_id: number) {
         const responseValues = await sqlResponse.json();
         console.log(responseValues);
 
-        // Return first result in array as a JSON object
+        // Return first result in array as a JSON object, as there is only one record returned for a given post_id
         return responseValues[0];
     } catch (err) {
         console.log('ERROR: DATABASE - ', (err as Error).message)
@@ -28,12 +28,14 @@ export async function getPostForReview(post_id: number) {
 
 export async function getPostsForReview() {
     try {
-        // Create query to fetch the oldest posts that have not received three reviews thus far.
-        // TODO only return posts that aren't written by the user 
-        let get_post_query = "select * from post where post.post_id IN (SELECT review.post_id from review GROUP BY review.post_id HAVING COUNT(review.post_id) < 3) ORDER BY post.create_time LIMIT 3;";
+        // Create query to fetch the oldest posts that have not received three reviews thus far, are not written by the current user, and have not been reviewed by the current users.
+        // TODO Post Versioning: only return the most recent version.
+        let get_post_query = "SELECT p.* FROM post p LEFT JOIN review r ON p.post_id = r.post_id WHERE p.user_id != ? AND NOT EXISTS (SELECT 1 FROM review r2 WHERE r2.post_id = p.post_id AND r2.user_id = ?) GROUP BY p.post_id HAVING COUNT(r.review_id) < 3 LIMIT 3;";
 
+        const session = await getSession();
+        const user_id = session?.user_id;
         // Execute the query and retrieve results
-        const sqlResponse = await executeStatement({}, get_post_query);
+        const sqlResponse = await executeStatement({user_id: user_id, user_id2: user_id}, get_post_query);
         const responseValues = await sqlResponse.json();
         console.log(responseValues);
 
