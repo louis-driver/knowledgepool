@@ -1,9 +1,9 @@
-'use client'
-
+import { createUser } from "@/app/actions/auth";
 import { SignupFormSchema } from "@/app/lib/signup";
 import { redirect } from "next/navigation";
 
 async function handleSubmit(formData: FormData) {
+    "use server"
     console.log("handleSubmit called.");
 
     // Validate form fields
@@ -15,24 +15,25 @@ async function handleSubmit(formData: FormData) {
         lastname: formData.get('lastname')
     })
 
-    // Send data to api
-    let res = await fetch(`http://localhost:3000/api/user/submit/`, {
-        method: 'POST',
-        body: JSON.stringify(validatedFields.data),
-        headers: {
-            'Content-Type': 'application/json'
+    //If any form fields are invalid return early
+    if (!validatedFields.success) {
+        console.log("Fields not validated");
+        console.log(validatedFields);
+        return {
+            errors: validatedFields.error.flatten().fieldErrors
         }
-    });
-    let submissionMessage = await res.json();
+    }
+
+    // Send data to api
+    let submissionMessage = await createUser(validatedFields.data);
     console.log("Submission Message:", submissionMessage);
-    
+        
     if (submissionMessage.creationStatus)
         redirect('/post');
-    else
-        redirect('/user/signin');
 }
 
 export default function Page() {
+    "use client"
     //const [formState, formAction] = useActionState(handleSubmit, undefined);
 
     return (

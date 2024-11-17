@@ -1,11 +1,9 @@
-
-'use client'
-
+import { authenticateUser } from "@/app/actions/auth";
 import { SigninFormSchema } from "@/app/lib/signin";
 import { redirect } from "next/navigation";
 
-async function authorizeUser(formData: FormData) {
-    console.log("authorizeUser called.");
+async function handleSubmit(formData: FormData) {
+    "use server"
 
     // Validate form fields
     const validatedFields = SigninFormSchema.safeParse({
@@ -22,23 +20,18 @@ async function authorizeUser(formData: FormData) {
         }
     }
 
-    console.log("Submitted:", validatedFields);
+    console.log("Submitted:", validatedFields.data);
 
-    // Send data to api
-    let res = await fetch(`http://localhost:3000/api/user/signin/`, {
-        method: 'POST',
-        body: JSON.stringify(validatedFields.data),
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    });
-    let submissionMessage = await res.json();
+    // Verify user exists and that the submitted password is valid
+    const submissionMessage = await authenticateUser(validatedFields.data)
     console.log("Submission Message:", submissionMessage);
 
+    // Server could not respond to the request
     if (!submissionMessage) {
-        console.log('An error occurred while signing you.');
+        console.log('An error occurred while signing you in.');
     }
 
+    // Redirect to view posts if the user was authenticated
     if (submissionMessage.authenticated)
         redirect('/post');
     else
@@ -46,11 +39,12 @@ async function authorizeUser(formData: FormData) {
 }
 
 export default function Page() {
-
+    "use client"
+    //TODO learn how useActionState to add error messages to login
     return (
         <>
             <h1>Welcome to KnowledgePool!</h1>
-            <form action={authorizeUser} >
+            <form action={handleSubmit} >
                 <div className="input-field">
                     <label htmlFor="username">Username</label>
                     <input type="text" id="username" name="username" required />
