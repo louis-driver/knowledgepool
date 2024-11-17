@@ -27,13 +27,13 @@ export default async function ParsedContent(props: { content: any; }) {
 
             // Placeholder content mapping for non-dynamic form 
             if (Object.keys(props.content)[index] == 'data') {
-                return (<p>{props.content.data}</p>)
+                return (<p key={index}>{props.content.data}</p>)
             }
             else if (Object.keys(props.content)[index] == 'text') {
-                return (<p>{props.content.text}</p>)
+                return (<p key={index}>{props.content.text}</p>)
             }
             else if (Object.keys(props.content)[index] == 'resources') {
-                return (<p>{props.content.resources}</p>)
+                return (<p key={index}>{props.content.resources}</p>)
             }
             // Base concept for parsing dynamically created forms
             else if (htmlElement == 'h2') {
