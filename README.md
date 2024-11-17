@@ -15,20 +15,35 @@ thus far.
 
 All application logic is stored in the src/app/ directory.
 
-Within the app/api/ folder are routes that are essentially the backend 
+Within the app/actions/ folder are server actions that are essentially the backend 
 for the application. In these routes I connect to and execute
 SQL statements in a MySQL database.
 
+I am currently migragting away from the use of API routes, as the use of
+server components means that fetching does not need to be done through an
+API, as the pages are created on the server and can thus directly access any data
+my API routes would provide.
+
 Examples:
-A request to http://domain/api/post will return a list of all 
-posts.
-A request to http://domain/api/post/[post_id] is a dynamic 
-route and will return the post with the given post_id, i.e. 
-http://domain/api/post/3 will return the data for post with post_id=3.
+Within a page.tsx file, a call to getPosts() from a file in the /actions
+folder will return posts for the user to view, to generate a page from.
+This would have previouslt been accomplished by a request to http://domain/api/post.
 
+A request to http://domain/post/[post_id] is a dynamic 
+route and will return a page for the post with the given post_id.
 
-I have placed pages that users can navigate to for content 
-in the app/pages/ folder, whose structure roughly mirrors the 
-api folder. I've done this to help align my page fetches with 
-the api routes. At this moment, the primary focus has been on 
-creating routes in the api, so not much is going on in pages/.
+## User Interface
+Currently the UI has been barebones as I learn data transferring
+and authentication methods for a Next.js project. I simply needed to 
+verify that each page was receving the necessary data.
+
+Design work will be the next step for this project.
+
+## Authentication
+I've created a from-scratch authentication system that will likely be replaced by
+Oauth in the future. However, It has helped me better understand the inner-workings
+of validating user account creation and utilizing cookies.
+
+The middleware.ts file in the /src folder will run on the folders/files in its config.
+This prevents uses from accessing protected resources if they do not have an account
+by redirecting them to sign in if they do not have a valid session cookie. 
