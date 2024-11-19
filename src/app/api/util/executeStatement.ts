@@ -20,6 +20,8 @@ export async function executeStatement(params: any, sqlStatement: string) {
         // Execute the query and retrieve results
         const [results] = await connection.execute(sqlStatement, values);
 
+        await connection.end()
+
         // Return results as a JSON object
         return NextResponse.json(results)
     } catch (err) {
