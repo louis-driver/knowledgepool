@@ -1,15 +1,10 @@
 import { getReviewsForPost } from "@/app/actions/post";
-import { notFound } from "next/navigation";
-
-interface Review {
-    id: number,
-    approval_rating: string,
-    comments: string,
-}
+import { Review } from "@/types/review";
 
 export default async function Pages({params}: {params: Promise<{post_id: number}>}) {
     const {post_id} = await params;
-    const reviews = await getReviewsForPost(post_id);
+    const reviews: Review[] = await getReviewsForPost(post_id);
+    console.log("Reviews:", reviews);
 
     return (
         <main>
@@ -19,7 +14,7 @@ export default async function Pages({params}: {params: Promise<{post_id: number}
             }
             {/* Create a card for each review */
             reviews.map((review: Review) => 
-                <section key={review.id}>
+                <section key={review.review_id}>
                     <h2>Approval: <span>{review.approval_rating}</span></h2>
                     <p>{review.comments}</p>
                 </section>
