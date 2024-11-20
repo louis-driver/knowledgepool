@@ -3,6 +3,37 @@ import localFont from "next/font/local";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { DM_Sans, Space_Grotesk } from 'next/font/google';
+
+const spaceGroteskBold = Space_Grotesk({
+  variable: "--font-space-grotesk-bold",
+  weight: "700",
+  subsets: ['latin'],
+})
+
+const spaceGroteskMedium = Space_Grotesk({
+  variable: "--font-space-grotesk-medium",
+  weight: "400",
+  subsets: ['latin'],
+})
+
+const dmSansBold = DM_Sans({
+  variable: "--font-dm-sans-bold",
+  weight: "700",
+  subsets: ['latin'],
+})
+
+const dmSans = DM_Sans({
+  variable: "--font-dm-sans",
+  weight: "400",
+  subsets: ['latin'],
+})
+
+const dmSansLight = DM_Sans({
+  variable: "--font-dm-sans-light",
+  weight: "200",
+  subsets: ['latin'],
+})
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -27,7 +58,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+      <body className={`${geistSans.variable} ${geistMono.variable} ${spaceGroteskBold.variable} ${dmSans.variable} ${dmSansBold.variable} ${spaceGroteskMedium.variable} ${dmSansLight.variable}`}>
         <Navbar />
         {children}
         <Footer />
