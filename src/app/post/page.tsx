@@ -1,9 +1,8 @@
 /* Documentation: https://nextjs.org/docs/app/building-your-application/data-fetching/fetching */
 
 import Link from "next/link"
-import { notFound } from "next/navigation"
 import { getPosts } from "../actions/post"
-import ParsedContent from "@/components/ParsedContent"
+import "./styles.css"
 
 interface Post {
     post_id: number
@@ -41,11 +40,12 @@ export default async function Page() {
 
     return (
         <main>
+            <h1 className="page-title">Drops of Knowledge</h1>
             {posts.map((post: Post) =>
-                <article key={post.post_id}>
-                    <h1>{post.title}</h1>
-                    <h2>{post.username}</h2>
-                    <p>{post.summary}</p>
+                <article key={post.post_id} className="knowledge-drop-card">
+                    <h1 className="card-title">{post.title}</h1>
+                    <h2 className="card-author"><span className="by-author">By</span> {post.username}</h2>
+                    <p className="card-summary">{post.summary}</p>
                     <Link href={`/post/${post.post_id}`}>Check out this Drop</Link>
                 </article>
             )}
