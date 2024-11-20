@@ -1,5 +1,4 @@
-import submitPost from "@/app/actions/post";
-import { getSession } from "@/app/lib/session";
+import { submitPost } from "@/app/actions/post";
 import { PostFormSubmission } from "@/types/post";
 
 async function handleSubmit(formData: FormData) {
@@ -13,17 +12,6 @@ async function handleSubmit(formData: FormData) {
     }
 
     console.log("Knowledge Drop Submitted:", validatedFields);
-
-    /*
-    let res = await fetch(`http://localhost:3000/api/post/submit`, {
-        method: 'POST',
-        body: JSON.stringify(validatedFields),
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    })
-
-    let submissionMessage = await res.json();*/
 
     let submissionMessage = await submitPost(validatedFields);
     console.log("Knowledge Drop Submission Message:", submissionMessage)
