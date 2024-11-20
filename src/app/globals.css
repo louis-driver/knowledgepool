@@ -1,6 +1,21 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --primary-color: #21295C;
+  --secondary-color: #E1EFFF;
+  --secondary-color-medium: #9AC4F8;
+  --secondary-color-dark: #4781C8;
+  --text-color: #111111;
+
+  --font-size-large: 3rem;
+  --font-size-heading: 2rem;
+  --font-size-medium: 1.25rem;
+  --font-size-small: 1rem;
+
+  --section-padding: 3rem;
+  --footer-height: 250px;
+  --footer-padding-vertical: 2rem;
+  --footer-padding-horizontal: 1rem; 
 }
 
 @media (prefers-color-scheme: dark) {
@@ -17,11 +32,17 @@ body {
 }
 
 body {
+  position: relative;
+  min-height: 100vh;
   color: var(--foreground);
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+main {
+  padding-bottom: var(--footer-height);
 }
 
 * {
@@ -39,4 +60,8 @@ a {
   html {
     color-scheme: dark;
   }
+}
+
+ul, ol {
+  list-style: none;
 }

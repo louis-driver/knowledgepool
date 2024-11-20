@@ -1,0 +1,12 @@
+
+.card-title {
+    font-family: var(--font-dm-sans-bold);
+    font-size: var(--font-size-heading);
+}
+
+.card-summary {
+    margin: 1em 0;
+    padding: 0.25em 0;
+    font-family: var(--font-dm-sans-light);
+    border-bottom: 1px solid black;
+}

@@ -1,0 +1,41 @@
+.article-knowledge-drop {
+    margin: 4rem;
+    width: clamp(300px, 60vw, 700px)
+}
+
+.knowledge-drop-title {
+    font-family: var(--font-space-grotesk-bold);
+    font-size: var(--font-size-large);
+}
+
+.knowledge-drop-subheadings {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    border-bottom: 1px solid black;
+}
+
+.knowledge-drop-author {
+    font-family: var(--font-dm-sans);
+    font-size: var(--font-size-medium);
+}
+
+.knowledge-drop-date {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: var(--font-size-small);
+    font-weight: 100;
+}
+
+.knowledge-drop-section-summary {
+    margin: 2rem 0 5rem;
+    border-bottom: 1px solid black;
+}
+
+.knowledge-drop-summary {
+    padding: 0.5em 0;
+}
+
+.article-knowledge-drop p {
+    font-family: var(--font-dm-sans);
+    font-size: var(--font-size-medium);
+}

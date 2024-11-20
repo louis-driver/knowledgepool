@@ -1,0 +1,23 @@
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding: 0.5em;
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.logo {
+    padding: 0;
+    font-family: var(--font-space-grotesk-bold), sans-serif;
+    font-size: 3em;
+}
+
+.link-list {
+    font-family: var(--font-dm-sans-light), sans-serif;
+    display: flex;
+}
+
+.link-list li {
+    padding: 0 2em;
+}
