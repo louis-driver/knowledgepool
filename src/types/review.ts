@@ -1,8 +1,10 @@
 export interface Review {
-    user_id: number,
+    review_id: number,
     post_id: number,
-    rating: string,
-    comments: string
+    user_id: number,
+    approval_rating: string,
+    comments: string,
+    create_time: string
 }
 
 export interface Post {
