@@ -93,3 +93,20 @@ export async function submitReview(review: Review) {
     }
     return response;
 }
+
+export async function getApprovalRatings(post_id: number) {
+    try {
+        const selectRatingsStatement = "SELECT review_id, approval_rating FROM review WHERE post_id = ?;"
+        const ratingsResponse = await executeStatement({post_id: post_id}, selectRatingsStatement);
+        const ratings = await ratingsResponse.json();
+        console.log(ratings);
+        return ratings;
+    } catch (err) {
+        console.log('ERROR: DATABASE - ', (err as Error).message)
+        const response = {
+            error: (err as Error).message,
+            returnedStatus: 200,
+        }
+        return response;
+    }
+}
