@@ -1,3 +1,53 @@
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+/* - - - - END STYLES RESET - - - - */
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -6,6 +56,7 @@
   --secondary-color-medium: #9AC4F8;
   --secondary-color-dark: #4781C8;
   --text-color: #111111;
+  --unfocused-input-color: #EEEEFF;
 
   --font-size-large: 3rem;
   --font-size-heading: 2rem;
@@ -13,9 +64,16 @@
   --font-size-small: 1rem;
 
   --section-padding: 3rem;
-  --footer-height: 250px;
+  --footer-height: calc(215px + 13vw);
   --footer-padding-vertical: 2rem;
   --footer-padding-horizontal: 1rem; 
+
+  --content-margin-horizontal-1: clamp(4rem, calc(var(--heading-margin-horizontal) + 2rem), 12rem);
+  --content-margin-horizontal: 2rem;
+  --content-width: clamp(300px, 60vw, 650px);
+  --article-width: clamp(300px, 60vw, 700px);
+  --heading-margin-horizontal: clamp(2rem, 20vw, 10rem);
+  --form-width: 18rem;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -27,13 +85,13 @@
 
 html,
 body {
-  max-width: 100vw;
+  max-width: 100dvw;
   overflow-x: hidden;
 }
 
 body {
   position: relative;
-  min-height: 100vh;
+  min-height: 100dvh;
   color: var(--foreground);
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
@@ -42,13 +100,18 @@ body {
 }
 
 main {
-  padding-bottom: var(--footer-height);
+  /* Bottom padded to provide space for footer */
+  padding: 0 var(--heading-margin-horizontal) var(--footer-height);
 }
 
 * {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
+}
+
+form {
+  margin-bottom: 3rem; 
 }
 
 a {
@@ -64,4 +127,139 @@ a {
 
 ul, ol {
   list-style: none;
+}
+
+.page-title {
+  width: var(--article-width);
+  margin: 1em 0 0.25em;
+  font-family: var(--font-space-grotesk);
+  font-size: var(--font-size-large);
+  font-weight: 800;
+}
+
+.page-paragraph, .page-ul {
+  width: clamp(300px, 70vw, 800px);
+  margin: 1em 0; 
+  font-family: var(--font-dm-sans);
+  font-size: var(--font-size-medium);
+  line-height: 125%;
+}
+
+.page-ul {
+  padding-left: 1.5em;
+  list-style: circle;
+}
+
+.page-li {
+  margin: 0.5em 0;
+}
+
+.knowledge-drop-card {
+  width: var(--content-width);
+  margin: 3rem var(--content-margin-horizontal);
+  font-family: var(--font-dm-sans);
+}
+
+.knowledge-drop-card p {
+  font-size: var(--font-size-medium);
+}
+
+.knowledge-drop-card a {
+    font-size: var(--font-size-medium);
+    margin: 1em 0;
+}
+
+.knowledge-drop-card a:hover {
+  text-decoration: underline;
+}
+
+.user-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: var(--form-width);
+}
+
+.submit-button {
+  width: var(--form-width);
+  margin: 0.5em 0 0;
+  padding: 0.5em 1em;
+  font-family: var(--font-dm-sans);
+  font-size: var(--font-size-medium);
+  font-weight: 600;
+  border: 2px solid var(--foreground);
+  border-radius: 0.5em;
+  background-color: var(--background);
+}
+
+.submit-button:hover {
+  color: white;
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.input-field, .input-field input {
+  font-family: var(--font-dm-sans);
+  font-size: var(--font-size-medium);
+}
+
+.input-field {
+  display: flex;
+  flex-direction: column;
+  width: var(--form-width);
+  margin: 0.25em 0;
+}
+
+.input-field label {
+  margin-bottom: 0.25em;
+  font-weight: 100;
+}
+
+.input-field input {
+  background-color: var(--unfocused-input-color);
+  border: none;
+  border-bottom: 1px solid var(--foreground);
+}
+
+.input-field input:focus {
+  background-color: var(--background);
+  outline: none;
+  border-bottom: 2px solid var(--foreground);
+}
+
+.form-link {
+  margin: 0.5em 0;
+  font-family: 'Courier New', Courier, monospace;
+  text-decoration: underline;
+}
+
+.form-link:hover {
+  margin: 0.5em 0;
+  text-decoration: none;
+}
+
+.card-title {
+  font-family: var(--font-dm-sans);
+  font-size: var(--font-size-heading);
+  font-weight: 600;
+}
+
+.card-summary {
+  margin: 0.25em 0;
+  padding: 0.25em 0;
+  font-family: var(--font-dm-sans);
+  line-height: 130%;
+  border-bottom: 1px solid var(--foreground);
+}
+
+.call-to-action {
+  display: flex;
+}
+
+.logo-drop {
+  width: 2em;
+  height: 3.5em;
+  margin: 0 1em 0 0;
+  background: center no-repeat url("/logo-white-in-blue-drop.svg");
+  background-size: 100%;
 }
