@@ -1,7 +1,5 @@
 import { submitPost } from "@/app/actions/post";
-import AutoSizeTextArea from "@/components/AutoSizeTextArea";
 import { PostFormSubmission } from "@/types/post";
-import "./styles.css"
 
 async function handleSubmit(formData: FormData) {
     "use server"
@@ -20,40 +18,33 @@ async function handleSubmit(formData: FormData) {
 }
 
 export default function Page() {
-    "use client"
-
+    'use client'
     return (
-        <main>
-            <h1 className="page-title">Let's Fill the KnowledgePool!</h1>
-            <p className="page-paragraph">You're contributing to the KnowledgePool, that's awesome! Here are some things to understand when creating a Drop of Knowledge:</p>
-            <ul className="page-ul">
-                <li className="page-li">The purpose of your Drop should be to share something you've learned or to teach others about a topic.</li>
-                <li className="page-li">Your Drop will be reviewed by your peers before it is published for the masses.</li>
-                <li className="page-li">First versions of submissions may not be approved and that's okay! Our filtration system is designed to help you improve your content and guarantee that only "clean", quality Drops fill the KnowledgePool.</li>
-            </ul>
-            <p className="page-paragraph">Now jump in!</p>
-            <form action={handleSubmit} className="form-drop-submission">
+        <>
+            <h1>Let's fill the KnowledgePool!</h1>
+            <form action={handleSubmit}>
                 <div className="input-field">
-                    <AutoSizeTextArea id="title" name="title" className="textarea-autosize-title" placeholder="Title" />
+                    <label htmlFor="title">Title</label>
+                    <input type="text" id="title" name="title" required />
                 </div>
 
                 <div className="input-field">
-                    <label htmlFor="summary">Snapshot</label>
-                    <AutoSizeTextArea id="summary" name="summary" placeholder="Give a brief summary or attention getter to let readers know if your Drop is of interest to them." />
+                    <label htmlFor="summary">Summary</label>
+                    <textarea id="summary" name="summary" required />
                 </div>
 
                 <div className="input-field">
                     <label htmlFor="content">Content</label>
-                    <AutoSizeTextArea id="content" name="content" placeholder="This is where the water flows! Write about what you want to inform others about and how you came to the conclusions you did." />
+                    <textarea id="content" name="content" required />
                 </div>
 
                 <div className="input-field">
                     <label htmlFor="resources">Resources</label>
-                    <AutoSizeTextArea id="resources" name="resources" placeholder="Share any resources that you got your information from or that would be useful to readers who would like to engage more with the topic." />
+                    <textarea id="resources" name="resources" required />
                 </div>
 
-                <button type="submit" className="submit-button">Fill the Pool!</button>
+                <button type="submit">Submit Your Drop of Knowledge!</button>
             </form>
-        </main>
+        </>
     );
 }
