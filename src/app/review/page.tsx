@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { getPostsForReview } from "../actions/review";
 import { Post } from "@/types/review";
-import "./styles.css";
 
 export default async function Reviews() {
     let posts = await getPostsForReview();
@@ -10,12 +9,16 @@ export default async function Reviews() {
 
     return (
         <main>
-            <p>Here are some posts you can review.</p>
+            <h1 className="page-title">Drops to Filter</h1>
+            <p className="page-paragraph">Help keep our water clean! Review one of these Drops of Knowledge to ensure the integrity of information on the platform. Critique is expected and <i>welcome</i> so don't be afraid to share your thoughts! Feedback is what allows us to continually improve as individuals after all.</p>
             {posts.map((post: Post) => 
-                <section key={post.post_id}>
+                <section key={post.post_id} className="knowledge-drop-card">
                     <h2 className="card-title">{post.title}</h2>
                     <p className="card-summary">{post.summary}</p>
-                    <Link href={`/review/${post.post_id}`}>Let's Filter This Drop</Link>
+                    <div className="call-to-action">
+                        <div className="logo-drop" />
+                        <Link href={`/review/${post.post_id}`}>Let's Filter This Drop</Link>
+                    </div>
                 </section>
             )}
         </main>

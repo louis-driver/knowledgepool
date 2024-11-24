@@ -1,7 +1,7 @@
 /* Documentation: https://nextjs.org/docs/app/building-your-application/data-fetching/fetching */
 
-import Link from "next/link"
-import { getPosts } from "../actions/post"
+import Link from "next/link";
+import { getPosts } from "../actions/post";
 import "./styles.css"
 
 interface Post {
@@ -46,7 +46,10 @@ export default async function Page() {
                     <h1 className="card-title">{post.title}</h1>
                     <h2 className="card-author"><span className="by-author">By</span> {post.username}</h2>
                     <p className="card-summary">{post.summary}</p>
-                    <Link href={`/post/${post.post_id}`}>Check out this Drop</Link>
+                    <div className="call-to-action">
+                        <div className="logo-drop" />
+                        <Link href={`/post/${post.post_id}`}>Check out this Drop</Link>
+                    </div>
                 </article>
             )}
         </main>

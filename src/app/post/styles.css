@@ -1,35 +1,13 @@
-.page-title {
-    margin: 1em 2rem;
-    font-family: var(--font-space-grotesk-bold);
-    font-size: var(--font-size-large);
-}
-
-.knowledge-drop-card {
-    width: clamp(300px, 60vw, 500px);
-    margin: 2rem;
-}
-
-.card-title {
-    font-family: var(--font-dm-sans-bold);
-    font-size: var(--font-size-heading);
-}
-
-.card-author {
-    width: clamp(300px, 80%, 400px); 
+.card-author { 
+    margin-top: 0.4em;
+    padding-bottom: 0.25em;
     font-family: var(--font-dm-sans-light);
     font-size: var(--font-size-medium);
-    border-bottom: 1px solid var(--primary-color);
+    border-bottom: 1px solid var(--foreground);
 }
 
 .by-author {
     font-family: 'Courier New', Courier, monospace;
     font-weight: 100;
     font-size: var(--font-size-small);
-}
-
-.card-summary {
-    margin: 1em 0;
-    padding: 0.25em 0;
-    font-family: var(--font-dm-sans-light);
-    border-bottom: 1px solid black;
 }

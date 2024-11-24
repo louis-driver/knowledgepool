@@ -11,7 +11,8 @@ export default async function Page() {
 
     return (
         <main>
-            <p>Here are your Knowledge Drops that are pending filtration.</p>
+            <h1 className="page-title">My Drops</h1>
+            <p className="page-paragraph">Here are your submitted Drops of Knowledge. Select any Drop to see how you can improve your submission.</p>
             {await posts.map((post: Post) => mapPost(post))}
         </main>
     );
@@ -48,9 +49,12 @@ async function mapPost(post: Post) {
     return (
         <article key={post.post_id} className="knowledge-drop-card">
             <h1 className="card-title">{post.title}</h1>
-            <h2>Approval Status: {approvalStatus}</h2>
-            <p className="review-card-summary">{post.summary}</p>
-            <Link href={`/post/reviews/${post.post_id}`}>See Reviews for this Drop</Link>
+            <h2 className="approval-status">Approval Status: <b>{approvalStatus}</b></h2>
+            <p className="card-summary">{post.summary}</p>
+            <div className="call-to-action">
+                <div className="logo-drop" />
+                <Link href={`/post/reviews/${post.post_id}`}>See Reviews for this Drop</Link>
+            </div>
         </article>
     )
 }
