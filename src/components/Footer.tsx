@@ -2,7 +2,9 @@ import "./styles/Footer.css"
 
 export default function Footer() {
     return (
-        <footer>
+    <footer>
+        <img src="/pool-footer.svg" className="footer-graphic" />
+        <div className="footer-content">
             <section className="section-mission">
                 <div className="logo-svg"></div>
                 <div >
@@ -17,6 +19,7 @@ export default function Footer() {
                     <li>1-800-111-1111</li>
                 </ul>
             </section>
-        </footer>
+        </div>
+    </footer>
     )
 }

@@ -2,10 +2,18 @@ footer {
     position: absolute;
     bottom: 0;
     width: 100%;
-    height: var(--footer-height);
+}
+
+.footer-graphic {
+    width: 101%;
+    margin: 0 -4px -4px;
+}
+
+.footer-content {
     display: flex;
     align-items: center;
     padding: var(--footer-padding-vertical) var(--footer-padding-horizontal);
+    font-family: var(--font-dm-sans);
     background-color: var(--primary-color);
     color: white;
 }
@@ -18,28 +26,32 @@ footer {
 .logo-svg {
     width: 150px;
     height: 150px;
-    background: center no-repeat url("../../../public/logo-white-border-blue.svg");
+    background: center no-repeat url("/logo-white-border-blue.svg");
     background-size: 100%;
 }
 
 .section-mission h1 {
     margin: 0.25em 2rem;
-    font-family: var(--font-space-grotesk-bold);
+    font-family: var(--font-space-grotesk);
     font-size: var(--font-size-heading);
+    font-weight: 600;
 }
 
 footer p {
     width: 350px;
     margin: 0 2rem;
-    font-family: var(--font-dm-sans-light);
+    font-family: var(--font-dm-sans);
+    line-height: 130%;
 }
 
 .section-contact h1 {
     margin-bottom: 0.25em;
-    font-family: var(--font-space-grotesk-bold);
+    font-family: var(--font-space-grotesk);
+    font-size: var(--font-size-medium);
+    font-weight: 600;
 }
 
 .section-contact li {
     margin-bottom: 0.5em;
-    font-family: var(--font-dm-sans-light);
+    font-family: var(--font-dm-sans);
 }
