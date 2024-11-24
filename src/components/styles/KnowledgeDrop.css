@@ -1,7 +1,3 @@
-.article-knowledge-drop {
-    width: var(--article-width);
-}
-
 .knowledge-drop-title {
     font-family: var(--font-space-grotesk-bold);
     font-size: var(--font-size-large);
@@ -26,26 +22,4 @@
     font-family: 'Courier New', Courier, monospace;
     font-size: var(--font-size-small);
     font-weight: 100;
-}
-
-.knowledge-drop-section-summary {
-    width: var(--article-width);
-    margin: 2rem 0 3rem;
-    border-bottom: 1px solid var(--foreground);
-}
-
-.knowledge-drop-section-summary h2 {
-    font-family: var(--font-dm-sans);
-    font-size: var(--font-size-heading);
-    font-weight: 600;
-}
-
-.knowledge-drop-summary {
-    padding: 0.5em 0;
-    line-height: 130%;
-}
-
-.knowledge-drop-section-summary p {
-    font-family: var(--font-dm-sans);
-    font-size: var(--font-size-medium);
 }

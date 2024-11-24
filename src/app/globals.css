@@ -263,3 +263,27 @@ ul, ol {
   background: center no-repeat url("/logo-white-in-blue-drop.svg");
   background-size: 100%;
 }
+
+.article-knowledge-drop {
+  width: var(--article-width);
+  margin: 5rem 0;
+}
+
+.knowledge-drop-section-summary {
+  width: var(--article-width);
+  margin: 2rem 0 3rem;
+  border-bottom: 1px solid var(--foreground);
+}
+
+.knowledge-drop-section-summary h2 {
+  font-family: var(--font-dm-sans);
+  font-size: var(--font-size-heading);
+  font-weight: 600;
+}
+
+.knowledge-drop-summary {
+  padding: 0.5em 0;
+  line-height: 130%;
+  font-family: var(--font-dm-sans);
+  font-size: var(--font-size-medium);
+}
