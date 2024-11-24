@@ -1,0 +1,8 @@
+.textarea-autosize {
+    resize: none;
+    width: clamp(300px, 60vw, 700px);
+    min-height: 6em;
+    margin-bottom: 1rem;
+    font-family: var(--font-spectral);
+    font-size: var(--font-size-medium);
+}
