@@ -1,6 +1,8 @@
 import { authenticateUser } from "@/app/actions/auth";
 import { SigninFormSchema } from "@/app/lib/signin";
 import { redirect } from "next/navigation";
+import Link from "next/link";
+import "../styles.css"
 
 async function handleSubmit(formData: FormData) {
     "use server"
@@ -42,9 +44,9 @@ export default function Page() {
     "use client"
     //TODO learn how useActionState to add error messages to login
     return (
-        <>
-            <h1>Welcome to KnowledgePool!</h1>
-            <form action={handleSubmit} >
+        <main>
+            <h1 className="page-title">Take a Dip in the KnowledgePool</h1>
+            <form action={handleSubmit} className="user-form">
                 <div className="input-field">
                     <label htmlFor="username">Username</label>
                     <input type="text" id="username" name="username" required />
@@ -54,8 +56,9 @@ export default function Page() {
                     <input type="password" id="password" name="password" required />
                 </div>
 
-                <button type="submit">Let's Swim!</button>
+                <button type="submit"  className="submit-button">Let's Swim!</button>
+                <Link href={"/user/submit"} className="form-link">Already have an account?</Link>
             </form>
-        </>
+        </main>
     );
   }

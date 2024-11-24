@@ -1,6 +1,8 @@
 import { createUser } from "@/app/actions/auth";
 import { SignupFormSchema } from "@/app/lib/signup";
+import Link from "next/link";
 import { redirect } from "next/navigation";
+import "../styles.css";
 
 async function handleSubmit(formData: FormData) {
     "use server"
@@ -37,9 +39,9 @@ export default function Page() {
     //const [formState, formAction] = useActionState(handleSubmit, undefined);
 
     return (
-        <>
-            <h1>Welcome to KnowledgePool!</h1>
-            <form action={handleSubmit} >
+        <main>
+            <h1 className="page-title">Welcome to KnowledgePool!</h1>
+            <form action={handleSubmit} className="user-form">
                 <div className="input-field">
                     <label htmlFor="firstname">First Name</label>
                     <input type="text" id="firstname" name="firstname" required />
@@ -67,8 +69,9 @@ export default function Page() {
                     <input type="password" id="password" name="password" required />
                 </div>
 
-                <button type="submit">Let's Swim!</button>
+                <button type="submit" className="submit-button">Let's Swim!</button>
+                <Link href={"/user/signin"} className="form-link">Already have an account?</Link>
             </form>
-        </>
+        </main>
     );
 }
