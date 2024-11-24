@@ -6,7 +6,7 @@ export async function getPosts() {
     console.log("getPosts called");
     try {
         // Create query to fetch post title and summary data for card display
-        let get_posts_query = "SELECT post.post_id, user.username, post.title, post.summary FROM user INNER JOIN post ON user.user_id=post.user_id";
+        let get_posts_query = "SELECT post.post_id, user.username, post.title, post.summary FROM user INNER JOIN post ON user.user_id=post.user_id ORDER BY post.create_time DESC";
 
         // Execute the query and retrieve results
         const sqlResponse = await executeStatement({}, get_posts_query);
