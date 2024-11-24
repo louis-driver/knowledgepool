@@ -2,19 +2,34 @@ nav {
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
+    margin-bottom: 4rem;
     padding: 0.5em;
     background-color: var(--primary-color);
     color: white;
 }
 
 .logo {
-    padding: 0;
-    font-family: var(--font-space-grotesk-bold), sans-serif;
+    position: relative;
+    padding-left: 4rem;
+}
+
+.logo-image {
+    position: absolute;
+    left: 0rem;
+    width: 4rem;
+    height: 7rem;
+    background: center no-repeat url("../../../public/logo-white-in-blue-drop.svg");
+    background-size: 100%;
+}
+
+.logo-text {
+    font-family: var(--font-space-grotesk), sans-serif;
     font-size: 3em;
+    font-weight: 600;
 }
 
 .link-list {
-    font-family: var(--font-dm-sans-light), sans-serif;
+    font-family: var(--font-dm-sans), sans-serif;
     display: flex;
 }
 
