@@ -1,0 +1,35 @@
+
+.content-section {
+    width: var(--content-width);
+    margin: 0 var(--content-margin-horizontal);
+    font-family: var(--font-dm-sans);
+}
+
+.content-heading {
+    margin: 1.5em 0 0.5em;
+    font-size: var(--font-size-heading);
+    font-weight: 700;
+    line-height: 100%;
+}
+
+.content-paragraph, .content-li {
+    font-family: var(--font-spectral);
+    font-size: var(--font-size-medium);
+    line-height: 140%;
+}
+
+.content-paragraph {
+    margin: 1em 0;
+}
+
+.content-ol {
+    list-style: decimal inside;
+}
+
+.content-ul {
+    list-style: circle inside;
+}
+
+.content-li {
+
+}
