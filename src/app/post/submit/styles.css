@@ -1,0 +1,36 @@
+.form-drop-submission {
+    margin: 4rem var(--content-margin-horizontal);
+}
+
+.input-field {
+    display: flex;
+    flex-direction: column;
+    width: clamp(300px, 60vw, 700px);
+    margin: 2em 0;
+    border-bottom: 1px solid var(--foreground);
+}
+
+.input-field label {
+    font-family: var(--font-dm-sans);
+    font-size: var(--font-size-heading);
+    font-weight: 700;
+    margin: 1em 0 0.5em;
+}
+
+.input-field textarea {
+    resize: none;
+    border: none;
+    margin: 0;
+}
+
+.textarea-autosize-title {
+    height: 65px; /* The height assigned by the AutoSizeTextArea */
+    font-family: var(--font-space-grotesk-bold);
+    font-size: var(--font-size-large);
+    font-weight: 600;
+}
+
+.input-field textarea:focus {
+    outline: none;
+    border-bottom: 2px solid var(--foreground);
+}

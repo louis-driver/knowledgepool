@@ -1,0 +1,60 @@
+/* Source for radio styling: https://moderncss.dev/pure-css-custom-styled-radio-buttons/ */
+
+.version-heading {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: var(--font-size-medium);
+}
+
+.radio-fieldset {
+    display: flex;
+    margin-bottom: 3rem;
+    font-family: var(--font-dm-sans);
+    font-size: var(--font-size-medium);
+    font-weight: 600;
+}
+
+.radio-fieldset label {
+    margin-right: 2em;
+    display: grid;
+    grid-template-columns: 1em auto;
+    gap: 0;
+    font-weight: 400;
+}
+
+.radio-fieldset input {
+    appearance: none;
+    margin-top: 0.15em;
+    width: 1.25em;
+    height: 1.25em;
+    border: 0.2em solid var(--primary-color);
+    border-radius: 50%;
+    display: grid;
+    place-content: center;
+}
+
+.radio-fieldset input::before {
+    content: "";
+    width: 0.65em;
+    height: 0.65em;
+    border-radius: 50%;
+    transform: scale(0);
+    transition: 120ms transform ease-in-out;
+    box-shadow: inset 1em 1em var(--primary-color);
+  }
+
+  
+.radio-fieldset input:checked::before {
+    transform: scale(1);
+}
+
+.comments-field {
+    display: flex;
+    flex-direction: column;
+}
+
+.comments-field label {
+    font-family: var(--font-dm-sans);
+    font-size: var(--font-size-heading);
+    font-weight: 600;
+    margin-bottom: 0.25em;
+}
