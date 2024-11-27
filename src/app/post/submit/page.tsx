@@ -17,6 +17,8 @@ async function handleSubmit(formData: FormData) {
 
     let submissionMessage = await submitPost(validatedFields);
     console.log("Knowledge Drop Submission Message:", submissionMessage)
+
+    redirect('/post/reviews')
 }
 
 export default function Page() {
