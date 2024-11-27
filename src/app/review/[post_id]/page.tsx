@@ -5,6 +5,7 @@ import ParsedContent from "@/components/ParsedContent";
 import { Post, Review } from "@/types/review";
 import "./styles.css";
 import AutoSizeTextArea from "@/components/AutoSizeTextArea";
+import { redirect } from "next/navigation";
 
 async function handleSubmit(formData: FormData) {
     "use server"
@@ -22,6 +23,7 @@ async function handleSubmit(formData: FormData) {
 
     let submissionMessage = await submitReview(validatedFields);
     console.log("Review Submission Message:", submissionMessage)
+    redirect('/review');
 }
 
 export default async function Page({params}: {params: Promise<{post_id: number}>}) {
