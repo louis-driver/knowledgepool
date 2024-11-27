@@ -2,6 +2,7 @@ import { submitPost } from "@/app/actions/post";
 import AutoSizeTextArea from "@/components/AutoSizeTextArea";
 import { PostFormSubmission } from "@/types/post";
 import "./styles.css"
+import { redirect } from "next/navigation";
 
 async function handleSubmit(formData: FormData) {
     "use server"
