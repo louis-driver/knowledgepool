@@ -57,7 +57,7 @@ export default function Page() {
                 </div>
 
                 <button type="submit"  className="submit-button">Let's Swim!</button>
-                <Link href={"/user/submit"} className="form-link">Already have an account?</Link>
+                <Link href={"/user/submit"} className="form-link">New to the Pool? Sign Up!</Link>
             </form>
         </main>
     );
