@@ -5,8 +5,8 @@ import { getSession } from "../lib/session";
 export async function getPosts() {
     console.log("getPosts called");
     try {
-        // Create query to fetch post title and summary data for card display
-        let get_posts_query = "SELECT post.post_id, user.username, post.title, post.summary FROM user INNER JOIN post ON user.user_id=post.user_id ORDER BY post.create_time DESC";
+        // Create query to fetch post title and summary data for card display from posts that have no more than 2 rejected approval ratings
+        let get_posts_query = "SELECT post.post_id, user.username, post.title, post.summary FROM user INNER JOIN post ON user.user_id = post.user_id LEFT JOIN review ON post.post_id = review.post_id AND review.approval_rating = 'Rejected' GROUP BY post.post_id HAVING COUNT(review.review_id) < 2 ORDER BY post.create_time DESC;";
 
         // Execute the query and retrieve results
         const sqlResponse = await executeStatement({}, get_posts_query);
