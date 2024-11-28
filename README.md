@@ -1,5 +1,5 @@
 ## KnowledgePool as a Platform
-KnowledgePoolintends to be a social platform that requires 
+KnowledgePool intends to be a social platform that requires 
 users to create long-form written content that is reviewed by 
 community members before being published. 
 
@@ -33,11 +33,15 @@ A request to http://domain/post/[post_id] is a dynamic
 route and will return a page for the post with the given post_id.
 
 ## User Interface
-Currently the UI has been barebones as I learn data transferring
-and authentication methods for a Next.js project. I simply needed to 
-verify that each page was receving the necessary data.
+The UI has been styled to have a cohesive design and color scheme.
+More design work and branding will be accomplished next semester 
+for my Advanced Web Design course. 
 
-Design work will be the next step for this project.
+UI aspects that will need to be styled in the future with the addition
+of new features include: a trending section, post categories, post likes, 
+post filtering, and post response trees. 
+
+A video of the current UI can be seen here: https://www.youtube.com/watch?v=c-EPgFZgN_A 
 
 ## Authentication
 I've created a from-scratch authentication system that will likely be replaced by
@@ -45,5 +49,5 @@ Oauth in the future. However, It has helped me better understand the inner-worki
 of validating user account creation and utilizing cookies.
 
 The middleware.ts file in the /src folder will run on the folders/files in its config.
-This prevents uses from accessing protected resources if they do not have an account
+This prevents users from accessing protected resources if they do not have an account
 by redirecting them to sign in if they do not have a valid session cookie. 
