@@ -39,3 +39,14 @@ export function isPostForDisplay(value: any): value is PostForDisplay {
         typeof value.create_time === "string"
     );
 }
+
+export function isPostForDisplayArray(value: any): value is PostForDisplay[] {
+    return (
+        value &&
+        Array.isArray(value) &&
+        value.every(
+            (item: any) =>
+                isPostForDisplay(item)
+        ) 
+    )
+}

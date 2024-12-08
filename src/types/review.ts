@@ -42,3 +42,14 @@ export function isPostForReview(value: any): value is PostForReview {
         typeof value.create_time === "string"
     )
 }
+
+export function isPostForReviewArray(value: any): value is PostForReview[] {
+    return (
+        value &&
+        Array.isArray(value) &&
+        value.every(
+            (item: any) =>
+                isPostForReview(item)
+        ) 
+    )
+}
