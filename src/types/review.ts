@@ -1,5 +1,11 @@
-import { getPostForReview } from "@/app/actions/review"
 import { isNonDynamicContent, isParsableArray, NonDynamicContent, ParsableHTMLElement } from "./parsedContent"
+
+export interface ReviewSubmission {
+    post_id: number,
+    user_id: number,
+    approval_rating: string,
+    comments: string
+}
 
 export interface Review {
     review_id: number,

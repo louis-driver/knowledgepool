@@ -1,5 +1,5 @@
 import { executeStatement } from "../api/util/executeStatement";
-import { Review } from "@/types/review";
+import { PostForReview, Review, ReviewSubmission } from "@/types/review";
 import { getSession } from "../lib/session";
 
 export async function getPostForReview(post_id: number) {
@@ -9,7 +9,7 @@ export async function getPostForReview(post_id: number) {
 
         // Execute the query and retrieve results
         const sqlResponse = await executeStatement({post_id}, get_post_query);
-        const responseValues = await sqlResponse.json();
+        const responseValues: PostForReview[] = await sqlResponse.json();
         console.log(responseValues);
 
         // Return first result in array as a JSON object, as there is only one record returned for a given post_id
@@ -36,7 +36,7 @@ export async function getPostsForReview() {
         const user_id = session?.user_id;
         // Execute the query and retrieve results
         const sqlResponse = await executeStatement({user_id: user_id, user_id2: user_id}, get_post_query);
-        const responseValues = await sqlResponse.json();
+        const responseValues: PostForReview[] = await sqlResponse.json();
         console.log(responseValues);
 
         // Return results as a JSON object
@@ -53,7 +53,7 @@ export async function getPostsForReview() {
     }
 }
 
-export async function submitReview(review: Review) {
+export async function submitReview(review: ReviewSubmission) {
     console.log("Called submitReview");
     console.log("Received:", review);
 
@@ -80,7 +80,7 @@ export async function submitReview(review: Review) {
     const validatedValues = {
         post_id: review.post_id,
         user_id: review.user_id,
-        approval_rating: review.rating,
+        approval_rating: review.approval_rating,
         comments: review.comments
     };
 
