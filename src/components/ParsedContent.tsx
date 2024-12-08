@@ -56,13 +56,6 @@ export default function ParsedContent({content}: Props) {
                         );
                     }
                 }
-                // In case of unsupported element, return it's content
-                return (
-                    <>
-                        <p>Content could not be parsed. Please Contact support@email.com or fill out this form that doesn't exist</p>
-                        <p>{JSON.stringify(content)}</p>
-                    </>
-                )
             })}
             </section>
         );
