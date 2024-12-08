@@ -19,7 +19,7 @@ interface Props {
 }
 
 // A function to parse the variable content that can be submitted in posts
-export default async function ParsedContent({content}: Props) {
+export default function ParsedContent({content}: Props) {
     
     // TODO Refactor to use React Components and Props for each element type
     // Parse each of the dynamically created html tags to generate a page
