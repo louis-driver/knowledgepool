@@ -1,3 +1,6 @@
+import { getPostForReview } from "@/app/actions/review"
+import { isNonDynamicContent, isParsableArray, NonDynamicContent, ParsableHTMLElement } from "./parsedContent"
+
 export interface Review {
     review_id: number,
     post_id: number,
@@ -7,7 +10,7 @@ export interface Review {
     create_time: string
 }
 
-export interface Post {
+export interface PostForReview {
     post_id: number,
     user_id: number,
     response_to: number | null,
@@ -15,6 +18,21 @@ export interface Post {
     version: number,
     title: string,
     summary: string,
-    content: any,
+    content: ParsableHTMLElement[] | NonDynamicContent,
     create_time: string
+}
+
+export function isPostForReview(value: any): value is PostForReview {
+    return (
+        value &&
+        typeof value.post_id === "number" &&
+        typeof value.user_id === "number" &&
+        (value.response_to === null || typeof value.response_to === "number") &&
+        (value.version_of === null || typeof value.version_of === "number") &&
+        typeof value.version === "number" &&
+        typeof value.title === "string" &&
+        typeof value.summary === "string" &&
+        (isParsableArray(value.content) || isNonDynamicContent(value.content)) &&
+        typeof value.create_time === "string"
+    )
 }
