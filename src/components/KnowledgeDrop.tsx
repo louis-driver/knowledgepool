@@ -2,13 +2,16 @@ import { dateToFormatted } from "@/app/lib/convert";
 import Link from "next/link";
 import ParsedContent from "./ParsedContent";
 import "./styles/KnowledgeDrop.css"
+import { PostForDisplay } from "@/types/post";
 
-export default function KnowledgeDrop(props) {
-    const post = props.post;
+interface Props {
+    post: PostForDisplay
+}
+
+export default function KnowledgeDrop({post}: Props) {
     console.log("Component Received:", post)
     const date = new Date(post.create_time)
     const formattedDate = dateToFormatted(date);
-    // TODO create function to return components based on content json. Ex: return <h2>Heading</h2><p>Paragraph</p> for {h2: "Heading", p:"Paragraph"}
     const content = post.content;
     
     return (
