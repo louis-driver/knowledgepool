@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom'
 import { render, screen } from '@testing-library/react'
-import Navbar from '../../src/components/Navbar'
+import Navbar from '@/components/Navbar'
  
 describe('Navbar', () => {
   it('renders KnowledgePool heading', () => {
