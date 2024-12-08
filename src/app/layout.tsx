@@ -3,6 +3,8 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { DM_Sans, Space_Grotesk, Spectral } from 'next/font/google';
+import { Suspense } from "react";
+import Loading from "./loading";
 
 const spaceGroteskMedium = Space_Grotesk({
   variable: "--font-space-grotesk",
@@ -41,7 +43,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${dmSans.variable} ${spaceGroteskMedium.variable} ${spectral.variable}`}>
         <Navbar />
-        {children}
+          <Suspense fallback={<Loading />}>
+            {children}
+          </Suspense>
         <Footer />
       </body>
     </html>
