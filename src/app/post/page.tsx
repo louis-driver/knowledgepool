@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { getPosts } from "../actions/post";
 import "./styles.css"
-import { isPostForDisplayArray, PostForDisplay } from "@/types/post";
+import { isPostCardForDisplayArray, PostCardForDisplay } from "@/types/post";
 
 export default async function Page() {
     let posts = await getPosts();
@@ -11,8 +11,8 @@ export default async function Page() {
     return (
         <main>
             <h1 className="page-title">Drops of Knowledge</h1>
-            { isPostForDisplayArray(posts) ? (
-                posts.map((post: PostForDisplay) => {
+            { isPostCardForDisplayArray(posts) ? (
+                posts.map((post: PostCardForDisplay) => {
                     return (
                         <article key={post.post_id} className="knowledge-drop-card">
                             <h1 className="card-title">{post.title}</h1>

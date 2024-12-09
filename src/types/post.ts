@@ -17,6 +17,13 @@ export interface PostFormSubmission {
     resources: FormDataEntryValue
 }
 
+export interface PostCardForDisplay {
+    post_id: number,
+    username: string,
+    title: string,
+    summary: string
+}
+
 export interface PostForDisplay {
     post_id: number,
     username: string,
@@ -25,6 +32,27 @@ export interface PostForDisplay {
     summary: string,
     content: ParsableHTMLElement[] | NonDynamicContent,
     create_time: string
+}
+
+export function isPostCardForDisplay(value: any): value is PostCardForDisplay {
+    return (
+        value &&
+        typeof value.post_id === "number" &&
+        typeof value.username === "string" &&
+        typeof value.title === "string" &&
+        typeof value.summary === "string"
+    )
+}
+
+export function isPostCardForDisplayArray(value: any): value is PostCardForDisplay[] {
+    return (
+        value &&
+        Array.isArray(value) &&
+        value.every(
+            (item: any) =>
+                isPostCardForDisplay(item)
+        )
+    )
 }
 
 export function isPostForDisplay(value: any): value is PostForDisplay {

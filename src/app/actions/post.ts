@@ -1,4 +1,4 @@
-import { PostForDisplay, PostFormSubmission, PostSubmission } from "@/types/post";
+import { PostCardForDisplay, PostForDisplay, PostFormSubmission, PostSubmission } from "@/types/post";
 import { executeStatement } from "../api/util/executeStatement";
 import { getSession } from "../lib/session";
 
@@ -10,7 +10,7 @@ export async function getPosts() {
 
         // Execute the query and retrieve results
         const sqlResponse = await executeStatement({}, get_posts_query);
-        const responseValues: PostForDisplay[] = await sqlResponse.json();
+        const responseValues: PostCardForDisplay[] = await sqlResponse.json();
 
         // Return results as a JSON object
         return responseValues;
