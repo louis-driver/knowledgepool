@@ -129,6 +129,12 @@ ul, ol {
   list-style: none;
 }
 
+.loading-screen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .page-title {
   width: var(--article-width);
   margin: 1em 0 0.25em;
