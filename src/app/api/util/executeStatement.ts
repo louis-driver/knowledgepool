@@ -1,6 +1,6 @@
 import { NextResponse, NextRequest } from 'next/server';
 import mysql from 'mysql2/promise';
-import { GetDBSettings, IDBSettings } from '../../../types/db_settings';
+import { GetDBSettings, ReturnError } from '../../../types/db_settings';
 
 // Populate mysql database parameters
 let connectionParams = GetDBSettings();
@@ -27,7 +27,7 @@ export async function executeStatement(params: any, sqlStatement: string) {
     } catch (err) {
         console.log('ERROR: API - ', (err as Error).message)
 
-        const response = {
+        const response: ReturnError = {
             error: (err as Error).message,
             returnedStatus: 200,
         }

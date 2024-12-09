@@ -6,6 +6,19 @@ export interface IDBSettings {
     database: string,
 }
 
+export interface ReturnError {
+    error: string,
+    returnedStatus: number
+}
+
+export function isReturnError(value: any): value is ReturnError {
+    return (
+        value && 
+        typeof value.error === "string" &&
+        typeof value.returnedStatus === "number"
+    )
+}
+
 export const GetDBSettings =(): IDBSettings => {
     const env = process.env.NODE_ENV;
 
