@@ -9,7 +9,6 @@ interface Props {
 }
 
 export default function KnowledgeDrop({post}: Props) {
-    console.log("Component Received:", post)
     const date = new Date(post.create_time)
     const formattedDate = dateToFormatted(date);
     const content = post.content;
