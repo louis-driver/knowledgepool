@@ -4,8 +4,6 @@ import { isPostForReviewArray, PostForReview } from "@/types/review";
 
 export default async function Reviews() {
     let posts = await getPostsForReview();
-    console.log("Component received posts to review");
-    console.log(posts);
 
     return (
         <main>
