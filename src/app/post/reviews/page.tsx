@@ -1,9 +1,9 @@
 import { getReviewedPosts } from "@/app/actions/post";
 import { getSession } from "@/app/lib/session";
-import { Post } from "@/types/review";
 import Link from "next/link";
 import "./styles.css"
 import { getApprovalRatings } from "@/app/actions/review";
+import { isPostForReviewArray, PostForReview } from "@/types/review";
 
 export default async function Page() {
     const user_id = (await getSession())?.user_id;
@@ -12,8 +12,19 @@ export default async function Page() {
     return (
         <main>
             <h1 className="page-title">My Drops</h1>
-            <p className="page-paragraph">Here are your submitted Drops of Knowledge. Select any Drop to see how you can improve your submission.</p>
-            {await posts.map((post: Post) => mapPost(post))}
+            { isPostForReviewArray(posts) ? (
+                <>
+                    <p className="page-paragraph">Here are your submitted Drops of Knowledge. Select any Drop to see how you can improve your submission.</p>
+                    { posts.map((post: PostForReview) => { return mapPost(post)}) }
+                </>
+            ) : (
+                <>
+                    <p className="page-paragraph">Sorry! We are unable to fetch your posts at this time. Please contact support@email.com so we can fix this issue.</p>
+                    {/* Print error message for diagnosing issue */}
+                    <p>{JSON.stringify(posts)}</p>
+                </>
+            )
+            }
         </main>
     );
 }
@@ -22,7 +33,7 @@ interface Rating {
     review_id: number,
     approval_rating: string,
 }
-async function mapPost(post: Post) {
+async function mapPost(post: PostForReview) {
     let ratings = await getApprovalRatings(post.post_id);
     console.log("Ratings:", ratings);
     let numApproved: number = 0;
