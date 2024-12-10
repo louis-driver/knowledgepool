@@ -29,8 +29,6 @@ async function handleSubmit(formData: FormData) {
 export default async function Page({params}: {params: Promise<{post_id: number}>}) {
     const {post_id} = await params;
     const post = await getPostForReview(post_id);
-    console.log("Component received post to review");
-    console.log(post);
 
     if (isPostForReview(post)) {
         const content = post.content;
@@ -79,6 +77,14 @@ export default async function Page({params}: {params: Promise<{post_id: number}>
 
                     <button type="submit" className="submit-button">Complete Filtration</button>
                 </form>
+            </main>
+        )
+    }
+    else {
+        return (
+            <main>
+                <h2 className="page-title">Status: {post.returnedStatus}</h2>
+                <p className="page-paragraph">{post.error}</p>
             </main>
         )
     }
