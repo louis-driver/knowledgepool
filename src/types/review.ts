@@ -28,6 +28,29 @@ export interface PostForReview {
     create_time: string
 }
 
+export function isReview(value: any): value is Review {
+    return (
+        value &&
+        typeof value.review_id === "number" &&
+        typeof value.post_id === "number" &&
+        typeof value.user_id === "number" &&
+        typeof value.approval_rating === "string" &&
+        typeof value.comments === "string" &&
+        typeof value.create_time === "string"
+    )
+}
+
+export function isReviewArray(value: any): value is Review[] {
+    return (
+        value &&
+        Array.isArray(value) &&
+        value.every(
+            (item: any) =>
+                isReview(item)
+        )
+    )
+}
+
 export function isPostForReview(value: any): value is PostForReview {
     return (
         value &&
