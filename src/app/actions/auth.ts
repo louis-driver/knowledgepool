@@ -1,10 +1,11 @@
-import { createSession } from "@/app/lib/session";
+import { createSession, getSession } from "@/app/lib/session";
 import { FormState, SignupFormSchema } from "@/app/lib/signup";
 import { executeStatement } from "../api/util/executeStatement";
 import { compare, hash } from "bcrypt";
 import { Credentials } from "@/types/user";
 import { SignupForm } from "@/types/forms";
 import { isReturnError } from "@/types/db_settings";
+import { ErrorMessage } from "@/types/errors";
 
 export interface FormResponse {
     message: string,
@@ -150,5 +151,100 @@ export async function authenticateUser(credentials: Credentials) {
     } catch (error) {
         console.log("Error occurred during authentication:", error)
         return error;
+    }
+}
+
+// Function to verify if the provided user_id for a request is the same as their session cookie
+export async function isUser(user_id: number) {
+    try {
+        console.log("isUser received user_id", user_id);
+        const session = await getSession();
+        const sessionUser_id = session?.user_id;
+        console.log("user_id from session cookie", sessionUser_id);
+        
+        if (user_id === sessionUser_id)
+            return true;
+        else
+            return false;
+    } catch (error) {
+        console.log("An error occurred while verifying user with id", user_id);
+        console.log(error)
+
+        // Return false because we cannot validate the user
+        return false;
+    }
+}
+
+// Function to verify if the user_id of the session is the author of the post with the provided post_id
+export async function isAuthorOf(post_id: number) {
+    try {
+        // Query to get user_id of the post
+        const get_author_query = "SELECT user_id FROM post WHERE post_id=?"
+        const getAuthorResponse = await executeStatement({post_id}, get_author_query);
+        const authorValues = await getAuthorResponse.json();
+        
+        // If sql response is empty, no post exists
+        if (authorValues.length == 0 ) {
+            let response: ErrorMessage = {
+                error: `There is no post with the requested id of ${post_id}`,
+                returnedStatus: 404
+            }
+            return response; 
+        }
+        
+        // Otherwise, continue by getting the user_id
+        let user_id = authorValues[0].user_id;
+
+        // Verify the user requesting the reviews is the author of the post
+        let isAuthor = await isUser(user_id)
+
+        return isAuthor;
+    } catch (error) {
+        console.log("An error occurred while verifying author for post with id", post_id);
+        console.log(error)
+
+        let response: ErrorMessage = {
+            error: "Internal server error",
+            returnedStatus: 500
+        }
+
+        return response;
+    }
+}
+
+export async function hasReviewedPost(post_id: number) {
+    try {
+        // Query to get user_id of the post
+        const get_reviewers_query = "SELECT user_id FROM review WHERE post_id=?"
+        const getReviewersResponse = await executeStatement({post_id}, get_reviewers_query);
+        const reviewerValues = await getReviewersResponse.json();
+        console.log("Reviewers:", reviewerValues)
+
+        // If post has no reviews, user has not reviewed the post
+        if (reviewerValues.length === 0) {
+            return false;
+        }
+
+        // Get user id from session cookie
+        const session = await getSession();
+        const sessionUser_id = session?.user_id;
+        
+        let hasReviewed = false
+        reviewerValues.map((value) => {
+            if (value.user_id === sessionUser_id)
+                hasReviewed = true
+        }) 
+
+        return hasReviewed;
+    } catch (error) {
+        console.log("An error occurred while verifying author for post with id", post_id);
+        console.log(error)
+
+        let response: ErrorMessage = {
+            error: "Internal server error",
+            returnedStatus: 500
+        }
+
+        return response;
     }
 }
