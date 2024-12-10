@@ -1,9 +1,36 @@
 import { executeStatement } from "../api/util/executeStatement";
 import { PostForReview, Review, ReviewSubmission } from "@/types/review";
 import { getSession } from "../lib/session";
+import { hasReviewedPost, isAuthorOf } from "./auth";
+import { ErrorMessage, isErrorMessage } from "@/types/errors";
 
 export async function getPostForReview(post_id: number) {
     try {
+        // Verify the user requesting the reviews is the author of the post
+        let isAuthor = await isAuthorOf(post_id)
+        console.log("isAuthor:", isAuthor)
+
+        if (isErrorMessage(isAuthor)) {
+            return isAuthor;
+        }
+        // Return an error if requesting user is the author, as they wrote the post
+        else if (isAuthor) {
+            const response: ErrorMessage = {
+                error: "Authors are not authorized to review their own posts.",
+                returnedStatus: 401
+            }
+            return response;
+        }
+
+        let hasReviewed = await hasReviewedPost(post_id)
+        if (hasReviewed) {
+            const response: ErrorMessage = {
+                error: `User has already reviewed post with id ${post_id}`,
+                returnedStatus: 401,
+            }
+            return response; 
+        }
+
         // Create query to fetch the selected post to review
         let get_post_query = "SELECT * FROM post WHERE post_id=?";
 
@@ -12,6 +39,15 @@ export async function getPostForReview(post_id: number) {
         const responseValues: PostForReview[] = await sqlResponse.json();
         console.log(responseValues);
 
+        // Return error if no posts are returned
+        if (responseValues.length === 0) {
+            const response: ErrorMessage = {
+                error: `No post found with id ${post_id}`,
+                returnedStatus: 404,
+            }
+            return response;
+        }
+
         // Return first result in array as a JSON object, as there is only one record returned for a given post_id
         return responseValues[0];
     } catch (err) {
@@ -19,7 +55,7 @@ export async function getPostForReview(post_id: number) {
 
         const response = {
             error: (err as Error).message,
-            returnedStatus: 200,
+            returnedStatus: 500,
         }
 
         return response;
@@ -46,7 +82,7 @@ export async function getPostsForReview() {
 
         const response = {
             error: (err as Error).message,
-            returnedStatus: 200,
+            returnedStatus: 500,
         }
 
         return response;
@@ -105,7 +141,7 @@ export async function getApprovalRatings(post_id: number) {
         console.log('ERROR: DATABASE - ', (err as Error).message)
         const response = {
             error: (err as Error).message,
-            returnedStatus: 200,
+            returnedStatus: 500,
         }
         return response;
     }
