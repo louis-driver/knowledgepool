@@ -1,6 +1,9 @@
 import { PostCardForDisplay, PostForDisplay, PostFormSubmission, PostSubmission } from "@/types/post";
 import { executeStatement } from "../api/util/executeStatement";
 import { getSession } from "../lib/session";
+import { Review } from "@/types/review";
+import { FormResponse, isAuthorOf } from "./auth";
+import { ErrorMessage } from "@/types/errors";
 
 export async function getPosts() {
     console.log("getPosts called");
@@ -16,9 +19,9 @@ export async function getPosts() {
         return responseValues;
     } catch (err) {
         console.log('ERROR: DATABASE - ', (err as Error).message)
-        const response = {
+        const response: ErrorMessage = {
             error: (err as Error).message,
-            returnedStatus: 200,
+            returnedStatus: 500,
         }
         return response;
     }
@@ -34,13 +37,21 @@ export async function getPost(post_id: number) {
         const sqlResponse = await executeStatement({post_id}, get_post_query);
         const responseValues: PostForDisplay[] = await sqlResponse.json();
 
+        if (responseValues.length === 0) {
+            const response: ErrorMessage = {
+                error: `No post found with id ${post_id}`,
+                returnedStatus: 404,
+            }
+            return response;
+        }
+
         // Return post as a JSON object
         return responseValues[0];
     } catch (err) {
         console.log('ERROR: DATABASE - ', (err as Error).message)
-        const response = {
+        const response: ErrorMessage = {
             error: (err as Error).message,
-            returnedStatus: 200,
+            returnedStatus: 500,
         }
         return response;
     }
@@ -49,23 +60,41 @@ export async function getPost(post_id: number) {
 export async function getReviewsForPost(post_id: number) {
     console.log("getReviewsForPost called, post_id:", post_id);
     try {
-        // TODO check that the author is requesting the reviews
+        // Verify the user requesting the reviews is the author of the post
+        let isAuthor = await isAuthorOf(post_id)
+
+        // Return an error if not the author
+        if (!isAuthor) {
+            const response: ErrorMessage = {
+                error: "User is not authorized to view reviews for this post.",
+                returnedStatus: 401
+            }
+            return response;
+        }
 
         // Create query to fetch the reviews for a given post
         let get_reviews_query = "SELECT * FROM review WHERE post_id=?";
 
         // Execute the query and retrieve results
-        const sqlResponse = await executeStatement({post_id}, get_reviews_query);
-        const responseValues = await sqlResponse.json();
+        const getReviewsResponse = await executeStatement({post_id}, get_reviews_query);
+        const responseValues: Review[] = await getReviewsResponse.json();
+
+        if (responseValues.length === 0) {
+            const response: ErrorMessage = {
+                error: `No post found with id ${post_id}`,
+                returnedStatus: 404,
+            }
+            return response;
+        }
 
         // Return results as a JSON object
         return responseValues;
     } catch (err) {
         console.log('ERROR: DATABASE - ', (err as Error).message)
 
-        const response = {
+        const response: ErrorMessage = {
             error: (err as Error).message,
-            returnedStatus: 200,
+            returnedStatus: 500,
         }
 
         return response;
@@ -75,8 +104,6 @@ export async function getReviewsForPost(post_id: number) {
 export async function getReviewedPosts(user_id: number) {
     console.log("getReviewedPosts called, user_id:", user_id);
     try {
-        // TODO check that the author is requesting the reviews
-
         // Create query to fetch all posts a user has submitted for review
         let get_reviewed_posts_query = "SELECT * FROM post WHERE user_id=?";
 
@@ -89,9 +116,9 @@ export async function getReviewedPosts(user_id: number) {
     } catch (err) {
         console.log('ERROR: DATABASE - ', (err as Error).message)
 
-        const response = {
+        const response: ErrorMessage = {
             error: (err as Error).message,
-            returnedStatus: 200,
+            returnedStatus: 500,
         }
 
         return response;
@@ -141,9 +168,8 @@ export async function submitPost(post: PostFormSubmission) {
     // TODO conditionally check if post would be created
     const creationStatus = true;
 
-    const response = {
+    const response: FormResponse = {
         message: "We received your post, thank you! It will be reviewed in our filtration system!",
-        received: post,
         creationStatus: creationStatus
     }
     return response;
