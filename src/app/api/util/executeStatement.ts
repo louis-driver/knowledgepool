@@ -29,9 +29,9 @@ export async function executeStatement(params: any, sqlStatement: string) {
 
         const response: ReturnError = {
             error: (err as Error).message,
-            returnedStatus: 200,
+            returnedStatus: 500,
         }
 
-        return NextResponse.json(response, {status: 200})
+        return NextResponse.json(response, {status: 500})
     }
 }
