@@ -50,7 +50,7 @@ async function mapPost(post: PostForReview) {
     let approvalStatus: string = "";
     if (numRejected >= 2)
         approvalStatus = "Rejected";
-    else if (numApproved >= 3)
+    else if (numApproved >= 2)
         approvalStatus = "Approved";
     else if (numNeedsWork >= 2 || numNeedsWork >= 1 && numRejected >= 1)
         approvalStatus = "Needs Work";

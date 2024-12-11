@@ -8,8 +8,8 @@ import { ErrorMessage } from "@/types/errors";
 export async function getPosts() {
     console.log("getPosts called");
     try {
-        // Create query to fetch post title and summary data for card display from posts that have no more than 2 rejected approval ratings
-        let get_posts_query = "SELECT post.post_id, user.username, post.title, post.summary FROM user INNER JOIN post ON user.user_id = post.user_id LEFT JOIN review ON post.post_id = review.post_id AND review.approval_rating = 'Rejected' GROUP BY post.post_id HAVING COUNT(review.review_id) < 2 ORDER BY post.create_time DESC;";
+        // Create query to fetch post title and summary data for card display from posts that have 2 or more approved ratings
+        let get_posts_query = "SELECT post.post_id, user.username, post.title, post.summary FROM user INNER JOIN post ON user.user_id = post.user_id LEFT JOIN review ON post.post_id = review.post_id AND review.approval_rating = 'Approved' GROUP BY post.post_id HAVING COUNT(review.review_id) >= 2 ORDER BY post.create_time DESC;";
 
         // Execute the query and retrieve results
         const sqlResponse = await executeStatement({}, get_posts_query);
@@ -78,14 +78,6 @@ export async function getReviewsForPost(post_id: number) {
         // Execute the query and retrieve results
         const getReviewsResponse = await executeStatement({post_id}, get_reviews_query);
         const responseValues: Review[] = await getReviewsResponse.json();
-
-        if (responseValues.length === 0) {
-            const response: ErrorMessage = {
-                error: `No post found with id ${post_id}`,
-                returnedStatus: 404,
-            }
-            return response;
-        }
 
         // Return results as a JSON object
         return responseValues;
