@@ -35,6 +35,8 @@ export async function submitUser(prevState: void | null, formData: FormData) {
         
     if (submissionMessage.creationStatus)
         redirect('/post');
+    else 
+        return submissionMessage;
 }
 
 export async function signinUser(prevState: void | null, formData: FormData) {
